@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>zz</title>
+	</head>
+	<body>
+		<script src="jquery-2.1.4.min.js"></script>
+		
+		<button onclick="getData()">get请求</button>
+		<button onclick="postData()">post请求</button>
+		<button onclick="load()">load请求</button>
+		<button onclick="ajax()">ajax请求</button>
+		<button onclick="ajaxPost()">ajaxPost请求</button>
+		<button onclick="jsonP()">jsonp请求</button>
+		<button onclick="jsonpPost()">jsonpPost请求</button>
+		<p id="p1"></p>
+		
+		<script>
+			$(function(){
+				
+			})
+			function getData(){
+				$.get("aj-01.json",function(data,stauts){
+					console.log("data==="+data+"=====status====="+status)
+				})
+				
+				//$.get("my.json",function(result,status,xhr){
+//					console.log(result);
+//				})
+			}
+			
+			function postData(){
+				$.post("aj-01.json",{
+					"name":"张三"
+				},function(data,status){
+					console.log("data==="+data+"===status===="+status)
+				})
+			}
+			
+			function load(){
+				//将请求下来的数据渲染到id为p1的元素
+				$("#p1").load("aj-01.json",function(a,b,c){
+					console.log("responseTXT===="+a+"statysTXT===="+b)
+				})
+			}
+			
+			function ajax(){
+				$.ajax({
+					url:"aj-01.json",
+					type:"get",
+					//请求超时
+					timeout:2000,
+					//是否缓存 默认是true
+					cache:true,
+					//成功
+					success:function(result,status,xhr){
+						console.log(result);
+					},
+					//失败
+					error:function(xhr,status,error){
+						
+					},
+					//完成 成功和失败都会执行 会在上面两个回调后执行
+					complete:function(xhr,status){
+						console.log(status)
+					}
+				})
+			}
+			
+			
+			function ajaxPost(){
+				$.ajax({
+					url:"aj-01.json",
+					type:"POST",
+					data:{"name":"张三"},
+					dataType:"json",
+					
+					success:function(result,status,xhr){
+						console.log(result)
+						console.log(status)
+						//ajax当前请求状态
+						console.log(xhr.readyState)
+						//服务器当前状态
+						console.log(xhr.status)
+					},
+					error:function(xhr,status,error){
+					}
+				})
+			}
+			
+			
+			function jsonP(){
+				$.ajax({
+					url:"http://127.0.0.1:8060?callback=?",
+					type:"GET",
+					//可以自己指定回调函数，不写就只执行默认的success error
+					jsonpCallback:"fuc",
+					//预期接受的数据类型1.设置jsonp 自己定义的回调函数才执行 2.可以直接将接受的数据转成对象
+					dataType:"jsonp",
+					success:function(result,status,xhr){
+						console.log(result);
+					}
+				})
+			}
+			function fuc(a){
+				console.log(a)
+			}
+			
+			function jsonpPost(){
+				$.ajax({
+					
+				url:"http://127.0.0.1:8060?callback=?",
+				type:"POST",
+				jsonpCallback:"fuc",
+				dataType:"jsonp",
+				//发送的请求参数
+				data:{"sex":"男","age":22},
+				success:function(result,status,xhr){
+					console.log(result)
+				}
+			})
+			}
+		</script>
+	</body>
+</html>

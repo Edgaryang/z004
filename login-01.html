@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<script src="jquery-2.1.4.min.js"></script>
+
+		用户名:<input type="text" id="user" /> 密码:
+		<input type="password" id="pass" /> 确认密码:
+		<input type="password" id="pass2" /> 登录
+		<button id="sub">登录</button>
+
+		<script>
+			$(function() {
+				//登录按钮点击事件
+				$("#sub").click(function() {
+					//用户名
+					var name = $("#user").val();
+					//密码
+					var pass = $("#pass").val();
+
+					//确认密码
+					var pass2 = $("#pass2").val();
+
+					//使用ajax向服务器发送请求 并且将用户名 密码 确认密码一起发送给服务器
+					$.post("http://127.0.0.1:8050/login", {
+						name: name,
+						mima: pass,
+						mima2: pass2,
+
+					}, function(data, sta) {
+						//接受到服务器返回的信息
+						if(data) {
+							//显示服务器返回的信息
+							alert(data)
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>
